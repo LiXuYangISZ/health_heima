@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rg.mapper.CheckItemMapper">
+
+    <insert id="add" parameterType="com.rg.pojo.CheckItem">
+        INSERT INTO t_checkitem(`code`,`name`,sex,age,price,`type`,attention,remark )
+        VALUES(#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
+    </insert>
+
+
+    <select id="selectByCondition" resultType="com.rg.pojo.CheckItem" parameterType="string">
+        select * from t_checkitem
+        <!--动态sql:根据查询条件来构造sql-->
+        <if test="value != null and value.length > 0">
+            where code like concat("%",#{value},"%")  or name like concat("%",#{value},"%")
+        </if>
+
+    </select>
+    <select id="findCountByCheckItemId" resultType="java.lang.Integer" parameterType="int">
+        select count(*) FROM
+        t_checkgroup_checkitem
+        WHERE checkitem_id = #{checkitem_id}
+    </select>
+    <select id="findById" resultType="com.rg.pojo.CheckItem" parameterType="int">
+        select * from t_checkitem where id = #{id}
+    </select>
+    <select id="findAll" resultType="com.rg.pojo.CheckItem">
+        select * from t_checkitem
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM t_checkitem WHERE id = #{id}
+    </delete>
+
+    <!--编辑-->
+    <update id="edit" parameterType="com.rg.pojo.CheckItem">
+        update t_checkitem
+        <set>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findCheckItemById" resultType="com.rg.pojo.CheckItem">
+        SELECT * FROM t_checkitem
+        WHERE id IN(
+        SELECT checkitem_id FROM t_checkgroup_checkitem
+        WHERE checkgroup_id = #{checkgroup_id}
+        )
+    </select>
+</mapper>

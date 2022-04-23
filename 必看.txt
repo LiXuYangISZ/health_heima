@@ -1,0 +1,7 @@
+备注:
+由于七牛云的OSS存储只能使用一个月,所以下次使用需要重新创建空间.需要修改的文件如下
+1.七牛云的配置类:health_common->QiniuUtils
+2.套餐页面中上传图片的域名地址:health_backend->setmeal.html
+3.因为前台页面中的套餐页面以及详情页面是静态页面,所以需要先增加一个套餐,同时修改Freemarker的模板中的域名地址,然后刷新重新进入.
+health_service_provider->webapp->ftl->xxx
+4.生成的的静态html需要配置路径health_service_provider->service->SetMealServiceImpl
